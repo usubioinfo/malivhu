@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'malivhu/cytoscape.js-panzoom.css' %}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script src="{% static 'node_modules/cytoscape/dist/cytoscape.min.js' %}"></script>
+<script src="{% static 'malivhu/cytoscape-panzoom.js' %}"></script>
+<script src="{% static 'malivhu/cytoscape-svg.js' %}"></script>
+<script src="{% static 'node_modules/dagre/dist/dagre.min.js' %}"></script>
+<script src="{% static 'node_modules/cytoscape-dagre/cytoscape-dagre.js' %}"></script>
+<script src="{% static 'node_modules/layout-base/layout-base.js' %}"></script>
+<script src="{% static 'node_modules/avsdf-base/avsdf-base.js' %}"></script>
+<script src="{% static 'node_modules/cytoscape-avsdf/cytoscape-avsdf.js' %}"></script>
+<script src="{% static 'node_modules/klayjs/klay.js' %}"></script>
+<script src="{% static 'node_modules/cytoscape-klay/cytoscape-klay.js' %}"></script>
+<script src="{% static 'malivhu/viewNetwork.js' %}"></script> 
+{% endblock %}
+
+{% block nav-submit %}
+<a class="nav-link active nav-link-active" href="{% url 'submit' %}">Submit</a>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" id="networkContainer">
+    {{ info4|json_script:"info4" }}
+    {{ phase4|json_script:"phase4-data" }}
+    {{ proteins|json_script:"proteins-data" }}
+    <h2 class="display-3 text-center">Interaction network</h2>
+    <div class="row" style="height: 850px">
+        <div class="col-3 collapse show d-md-flex bg-light pt-2 pb-2 pl-0 column overflow-auto" style="height: 100%"  id="sidebar">
+            <ul class="nav flex-column flex-nowrap overflow-auto width100">
+                <li id="proteinInfo" class="nav-item tertiary" class="noDisplay">
+                    <div>
+                        <h3 id="name" class="noDisplay">P0DTC4</h3>
+                        <h4 id=""><a id="ncbiUrl" class="noDisplay" href="#" target="_blank">NCBI</a> <span id="pipe" class="noDisplay">|</span> <a id="uniprotUrl" class="noDisplay" href="#" target="_blank">Uniprot</a></h4>
+                        <div id="retrieving" class="noDisplay">
+                            <p>Retrieving protein information. Please, reload the page in a minute.</p>
+                        </div>
+                        <div id="networkName" class="noDisplay">
+                            <b>Protein:</b>
+                            <p id="proteinName">Envelope small membrane protein</p>
+                        </div>
+                        <div id="networkOrganism" class="noDisplay">
+                            <b>Organism:</b>
+                            <p id="orgName">SARS</a></p>
+                        </div>
+                        <div id="networkTaxon" class="noDisplay">
+                            <b>Taxon ID:</b>
+                            <p id="orgTaxonId">9999</a></p>
+                        </div>
+                    </div>
+                </li>
+                <hr>
+                <li class="nav-item tertiary pe-2">
+                    <table id="tabNetwork" class="table" width="100%"></table>
+                </li>
+                <hr>
+                <li class="nav-item tertiary">
+                    <a class="nav-link collapsed text-truncate" href="#submenuLayout" data-bs-toggle="collapse" data-bs-target="#submenuLayout"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Layout</span></a>
+                    <div class="collapse" id="submenuLayout" aria-expanded="false">
+                        <ul class="flex-column ps-2 nav" id="listLayouts">
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="avsdf" onClick="changeLayout(this.id)" href="#"><span>AVSDF</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="breadthfirst" onClick="changeLayout(this.id)" href="#"><span>Breadth first</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="circle" onClick="changeLayout(this.id)" href="#"><span>Circle</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="concentric" onClick="changeLayout(this.id)" href="#"><span>Concentric</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="dagre" onClick="changeLayout(this.id)" href="#"><span>Dagre</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="klay" onClick="changeLayout(this.id)" href="#"><span>kLay</span></a></li>
+                            <li class="nav-item"><a class="nav-link py-0 nav-link-selected" id="grid" onClick="changeLayout(this.id)" href="#"><span>Grid</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item tertiary">
+                    <a class="nav-link text-truncate"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Font size</span></a>
+                    <div aria-expanded="false">
+                        <ul class="flex-column ps-2 pe-2 nav">
+                            <li class="nav-item">
+                                <input class="width100" type="range" id="font-size" name="font-size" min="12" max="24" value="16" oninput="changeFontSize(this.value)">
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item tertiary">
+                    <a class="nav-link text-truncate"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Node size</span></a>
+                    <div aria-expanded="false">
+                        <ul class="flex-column ps-2 pe-2 nav">
+                            <li class="nav-item">
+                                <input class="width100" type="range" id="node-size" name="node-size" min="20" max="80" value="50" oninput="changeNodeSize(this.value)">
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item tertiary">
+                    <a class="nav-link text-truncate"><i class="fa fa-table"></i> <span class="d-none d-sm-inline">Background color</span></a>
+                    <div aria-expanded="false">
+                        <ul class="flex-column ps-2 pe-2 nav">
+                            <li class="nav-item">
+                                <input type="color" id="bgColor" name="bgColor" value="#f5f4ed" oninput="changeBackgroundColor(this.value)">
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="mx-auto col-9" style="min-height: 100%" >
+            <div id="proteinsRow" class="row justify-content-md-center">
+                <div class="col col-lg-2">
+                    <button id="btnCoV1" class="btn legend networkCoV1" onclick="toggle('CoV1')">SARS-CoV-1 <br> protein</button>
+                </div> 
+                <div class="col col-lg-2">
+                    <button id="btnCoV2" class="btn legend networkCoV2" onclick="toggle('CoV2')">SARS-CoV-2 <br> protein</button>
+                </div> 
+                <div class="col col-lg-2">
+                    <button id="btnMERS" class="btn legend networkMERS" onclick="toggle('MERS')">MERS <br> protein</button>
+                </div> 
+                <div class="col col-lg-2">
+                    <div class="btn legend networkHuman">Human <br> protein</div>
+                </div> 
+            </div>
+            <div class="row">
+                <div id="cy"></div>
+            </div>
+            <div class="row ">
+                <div class="text-center">
+                    <br>
+                    <button class="btn btn-primary" onClick="downloadJSON()">Download JSON</button>&nbsp;&nbsp;
+                    <button class="btn btn-primary" onClick="downloadImage()">Download image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

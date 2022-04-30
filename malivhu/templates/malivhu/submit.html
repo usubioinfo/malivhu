@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+<script src="{% static 'malivhu/submit.js' %}"></script> 
+{% endblock %}
+
+{% block nav-submit %}
+<a class="nav-link active nav-link-active" href="{% url 'submit' %}">Submit</a>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ jobid|json_script:"jobid-data" }}
+    {{ chkInteraction|json_script:"chkInteraction-data" }}
+    <br>
+    <form action="{% url 'submit' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card shadow">
+        <div class="row">
+            <div class="col-sm card panel">
+                <span class="h4 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">I. Input</span>
+                <div class="card-body">
+                    <h5>VIRUS</h5>
+                    <p>Upload a FASTA file: </p>
+                    <input type="button" id="loadVirus" value="Choose file" onclick="document.getElementById('fileVirusFasta').click();" />
+                    <span id="labelVirusNone">No file chosen</span>
+                    <span id="labelVirusChosen"></span>
+                    <input type="file" class="form-control-file" id="fileVirusFasta" name="fileVirusFasta" value="{{virus}}" style="display: none" onchange="fileSelected('virus')" >
+                    <p>Or paste your FASTA sequence &#9;&#9; <span onClick="fillVirus()" class="btn btn-secondary btn-sm pull-right">Load a demo virus FASTA</span></p>
+                    <textarea class="form-control" id="txtVirusFasta" rows="5" name="txtVirusFasta">{{virus}}</textarea>
+                    <br>
+                    <h5>HUMAN</h5>
+                    <p>Upload a FASTA file: </p>
+                    <input type="button" id="loadHuman" value="Choose file" onclick="document.getElementById('fileHumanFasta').click();" />
+                    <span id="labelHumanNone">No file chosen</span>
+                    <span id="labelHumanChosen"></span>
+                    <input type="file" class="form-control-file" id="fileHumanFasta" name="fileHumanFasta" value="{{human}}" style="display: none" onchange="fileSelected('human')">
+                    <p>Or paste your FASTA sequence &#9;&#9; <span onClick="fillHuman()" class="btn btn-secondary btn-sm pull-right">Load a demo human FASTA</span></p>
+                    <textarea class="form-control" id="txtHumanFasta" rows="5" name="txtHumanFasta">{{human}}</textarea>
+                </div>
+            </div>
+            <div class="col-sm panel">
+                <div class="card panel">
+                    <span class="h4 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">II. Phases</span>
+                    <div class="card-body">
+                        <p>Choose the phases to be evaluated
+                            &nbsp;
+                            <img class="sub-image" data-bs-toggle="modal" data-bs-target="#exampleModal" src="{% static '/malivhu/images/info.svg' %}" aria-hidden="true" width=25px>
+                        </p>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkPhase1" name="chkPhase1" onchange="phase1Changed()" checked>
+                            <label class="custom-control-label" for="chkPhase1">Phase 1 - ssRNA(-) virus vs other proteins</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkPhase2" name="chkPhase2" onchange="phase2Changed()" checked>
+                            <label class="custom-control-label" for="chkPhase2">Phase 2 - Coronavirus vs other ssRNA(-) virus families</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkPhase3" name="chkPhase3" onchange="phase3Changed()" checked>
+                            <label class="custom-control-label" for="chkPhase3">Phase 3 - SARS1, SARS2 and MERS vs other coronaviruses</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkPhase4" name="chkPhase4" onchange="phase4Changed()" checked>
+                            <label class="custom-control-label" for="chkPhase4">Phase 4 - Virus-human protein-protein interaction</label>
+                        </div>
+                        <center>OR</center>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkInteraction" name="chkInteraction" onchange="interactionOnly()">
+                            <label class="custom-control-label" for="chkInteraction">Predict virus-human interaction only</label>
+                        </div>
+                        <div class="custom-control custom-checkbox radio-list">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="virus" id="radioCoV1" value="CoV1" disabled>
+                                <label class="form-check-label" for="radioCoV1">SARS CoV1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="virus" id="radioCoV2" value="CoV2" disabled>
+                                <label class="form-check-label" for="radioCoV2">SARS CoV2</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="virus" id="radioMERS" value="MERS" disabled>
+                                <label class="form-check-label" for="radioMERS">MERS</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card panel">
+                    <span class="h4 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">III. Submit</span>
+                    <div class="card-body">
+                        <p>Enter your email address (optional)</p>
+                        <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" name="txtEmail">
+                    </div>
+                    <div class="button-list">
+                        <button type="button" class="btn btn-secondary" onClick="reset()">Reset</button>
+                        <button type="submit" class="btn btn-primary">Predict</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+    
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">About Prediction Phases</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Phase 1 - Predicts whether the input viral proteins are ssRNA(-) virus proteins or not.</p>
+            <hr>
+            <p>Phase 2 - Predicts whether the ssRNA(-) proteins are Coronaviridae proteins vs other viral proteins.</p>
+            <hr>
+            <p>Phase 3 - Predicts whether the Coronaviridae proteins are SARS proteins vs MERS proteins vs other Coronaviridae proteins.</p>
+            <hr>
+            <p>Phase 4 - Predicts whether there is interaction between the SARS and MERS proteins and the human proteins. You can also skip the first three phases choosing the option "Predict interaction only" and choosing a specific virus.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalSubmission" tabindex="-2" role="dialog" aria-labelledby="modalSubmissionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalSubmissionLabel">Information about your submission</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+            </button>
+        </div>
+        <div class="modal-body" id="modalBodySubmission">
+            <div id="submitted" style="display:none">
+                Your job has been submitted! Please, click on the following link to check the results. <a href="{{ uri }}{{jobid}}" target="_blank">{{ uri }}{{jobid}}</a>
+                <div id="loadingGif">
+                    <img src="{% static '/malivhu/images/loadingDNA.gif' %}"></img>
+                </div>
+            </div>
+            <div id="submitError" style="display:none">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

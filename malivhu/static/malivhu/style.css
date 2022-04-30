@@ -1,0 +1,394 @@
+hr {
+    color: #f7a985;
+    opacity: 1;
+}
+
+.navbar-light {
+    background-color: #316879 !important;
+}
+
+.navbar-brand {
+    color: #f7a985 !important;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #316879;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    font-size: 1.5rem !important;
+}
+
+.navbar .nav-link-active {
+    border-bottom: 5px solid white;
+    content: '';
+}
+
+.subitem {
+    padding-left: 2rem;
+    text-align: left;
+}
+
+.subitemLink {
+    text-align: left;
+}
+
+.logo {
+    padding-left: 0.5rem;
+    height: 3rem;
+}
+
+.filter-white {
+    filter: invert(100%) sepia(0%) saturate(7489%) hue-rotate(291deg) brightness(115%) contrast(100%);
+}
+
+.filter-white-png {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(320deg) brightness(173%) contrast(101%);
+}
+
+.nav-link-active {
+    background-color: #316879 !important;
+    background-color: black;
+    font-weight: bold;
+}
+
+.page-item .page-link {
+    color: #316879 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #316879;
+    border-color: #dee2e6;
+    color: white !important;
+}
+
+
+.card-header {
+    background-color: #316879;
+    color: white;
+}
+
+.bg-primary {
+    background-color: #316879 !important;
+    width: 30%;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #7fe7dc;
+    border-color: #7fe7dc;
+    color: #3f5453;
+}
+
+.cc-nb-okagree {
+    background-color: #7fe7dc !important;
+    border-color: #7fe7dc !important;
+    color: #3f5453 !important;
+}
+
+.cc-cp-foot-save {
+    background-color: #7fe7dc !important;
+    border-color: #7fe7dc !important;
+    color: #3f5453 !important;
+}
+
+.btn-primary:hover {
+    border-color: #3f5453;
+    background-color: #469c94;
+    color: white;
+}
+
+.btn-primary:disabled {
+    background-color: #7fe7dc;
+    border-color: #7fe7dc;
+    color: #3f5453;
+}
+
+.dt-button {
+    background: none !important;
+    background-color: #7fe7dc !important;
+    border-color: #7fe7dc !important;
+    color: #3f5453 !important;
+}
+
+.dataTable .btn-primary {
+    border-color: #3f5453;
+    background-color: #469c94;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #ced7d8;
+    border-color: #ced7d8;
+    color: #3f5453;
+}
+
+.modal-header {
+    background-color: #316879;
+    color: white;
+}
+
+.about {
+    padding-right: 20px !important;
+    padding-bottom: 30px !important;
+}
+
+footer.page-footer {
+    bottom: 0;
+    color: #fff;
+    background-color: #316879;
+    text-align: center;
+    font-size: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+footer > a {
+    color: white;
+}
+
+footer > a:hover {
+    color: #f8b486;
+}
+
+.toggledOff {
+    opacity: 0.4;
+}
+
+.footerWhitespace {
+    display: block;
+    padding-bottom: 2%;
+    font-size: 1.2em;
+    margin-left: 20%;
+}
+
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
+
+#workflow { 
+    width: 100%;
+}
+
+.tertiary .nav-link[data-bs-toggle].collapsed:after {
+    content: " ▾";
+}
+.tertiary .nav-link[data-bs-toggle]:not(.collapsed):after {
+    content: " ▴";
+}
+
+.nav-link-selected { 
+    font-weight: bold;
+}
+
+.panel {
+    margin: 2px;
+}
+
+.card-body .sub-image {
+    vertical-align: sub;
+}
+
+.card p {
+    font-size: 1.2rem;
+}
+
+#loadingGif {
+    text-align: center;
+}
+
+.modal-body { 
+    padding-bottom: 0px;
+}
+
+.row {
+    --bs-gutter-x: 0;
+}
+
+.row>*{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.table {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid black;
+}
+
+.dataTables_scrollHead .table {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 1px solid black;
+    border-bottom: 0px;
+}
+
+.dataTables_scrollBody .table {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid black;
+    border-top: 0px;
+}
+
+#tabNetwork_filter {
+    text-align: left;
+}
+
+thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+thead tr:first-child th:first-child { border-bottom-left-radius: 0px; }
+thead tr:first-child th:last-child { border-top-right-radius: 10px; }
+thead tr:first-child th:last-child { border-bottom-right-radius: 0px; }
+tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+.table > thead {
+    background-color: #316879;
+    color:white;
+}
+
+.page-title {
+    margin-bottom: 0;
+    margin-top: 0;
+    line-height: 70px;
+}
+
+#supertitle{
+    margin-bottom: 0px;
+}
+
+.col-sm .panel > .card .panel{ 
+    margin: 0px
+}
+.button-list  {
+    margin: 5px 7px;
+    margin-left: 16px;
+    text-align: center;
+}
+
+.button-list .btn {
+    margin-right: 5px;
+}
+
+.inline {
+    display: inline;
+}
+
+.networkButton {
+    background: #469c94 !important;
+    color: white !important;
+    border-color: #3f5453 !important;
+    font-weight: bold;
+}
+
+.networkContainer {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.networkCoV1{
+    background-color: rgb(71, 125, 73);
+    font-weight: bold;
+    color: white;
+}
+
+.networkCoV2{
+    background-color: rgb(50, 108, 170);
+    font-weight: bold;
+    color: white;
+}
+
+.networkMERS{
+    background-color: rgb(204, 170, 108);
+    font-weight: bold;
+}
+
+.networkMERS:hover{
+    color: white;
+}
+
+.networkHuman{
+    background-color: rgb(255, 93, 72);
+    font-weight: bold;
+    color: white;
+}
+
+.networkHuman:hover{
+    background-color: rgb(255, 93, 72);
+    font-weight: bold;
+    color: white;
+    cursor: default;
+}
+
+.nodeCoV2 {
+    background-color: black;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.noDisplay {
+    display: none;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0px !important;
+}
+
+.dataTables_length{
+    float: right;
+    margin-left: 5px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+}
+
+.legend {
+    width: 70%;
+}
+
+.width100 { 
+    width: 100%;
+}
+
+.dt-body-center {
+    text-align: center;
+}
+
+.radio-list {
+    text-align: center;
+}
+
+.column {
+    height: 100%
+}
+
+#proteinsRow { 
+    padding-top: 10px;
+}
+
+#cy {
+    width: 100%;
+    height: 768px;
+    display: block;
+}

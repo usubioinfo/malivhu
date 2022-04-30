@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block header %}
+<script src="{% static 'malivhu/datasets.js' %}"></script> 
+{% endblock %}
+{% block nav-datasets %}
+<a class="nav-link active nav-link-active" href="{% url 'datasets' %}">Datasets</a>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="display-4 text-center">Numpy datasets</h4>
+        </div>
+    </div>
+    <div class="row row-cols-3">
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 1</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.1.npy">X_train.1.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.1.npy">y_train.1.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.1.npy">X_test.1.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.1.npy">y_test.1.npy</a></p>
+        </div>
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 2</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.2.npy">X_train.2.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.2.npy">y_train.2.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.2.npy">X_test.2.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.2.npy">y_test.2.npy</a></p>
+        </div>
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 3</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.3.npy">X_train.3.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.3.npy">y_train.3.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.3.npy">X_test.3.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.3.npy">y_test.3.npy</a></p>
+        </div>
+    </div>
+    
+    <div class="row row-cols-3">
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 4 - SARS-CoV</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.CoV1.npy">X_train.CoV1.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.CoV1.npy">y_train.CoV1.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.CoV1.npy">X_test.CoV1.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.CoV1.npy">y_test.CoV1.npy</a></p>
+        </div>
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 4 - SARS-CoV-2</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.CoV2.npy">X_train.CoV2.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.CoV2.npy">y_train.CoV2.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.CoV2.npy">X_test.CoV2.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.CoV2.npy">y_test.CoV2.npy</a></p>
+        </div>
+        <div class="col px-2">
+            <h2 class="card-header text-center">Phase 4 - MERS</h2>
+            <h3>Training set</h3>
+            <p><a href="/malivhu/static/datasets/X_train.MERS.npy">X_train.MERS.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_train.MERS.npy">y_train.MERS.npy</a></p>
+            <h3>Test set</h3>
+            <p><a href="/malivhu/static/datasets/X_test.MERS.npy">X_test.MERS.npy</a></p>
+            <p><a href="/malivhu/static/datasets/y_test.MERS.npy">y_test.MERS.npy</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

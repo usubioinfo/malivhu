@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% block nav-help %}
+{% load static %}
+
+<a class="nav-link active nav-link-active" href="{% url 'help' %}">Help</a>
+
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="display-4 text-center">How to use Malivhu?</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-2" style="position: fixed">
+            <ul class="list-group">
+            <li class="list-group-item"><a href="#helpIntro" class="btn">Introduction</a></li>
+            <li class="list-group-item"><a href="#helpDataInput" class="btn">Data input</a></li>
+            <li class="list-group-item"><a href="#helpPhaseSelection" class="btn">Phase Selection</a></li>
+            <li class="list-group-item"><a href="#helpSubmit" class="btn">Submit</a></li>
+            <li class="list-group-item"><a href="#helpResults" class="btn">Results</a></li>
+            <li class="list-group-item subitem"><a href="#helpPhases12" class="btn subitemLink">Executing phases 1 and 2 only</a></li>
+            <li class="list-group-item subitem"><a href="#helpPhase3" class="btn subitemLink">Executing phase 3</a></li>
+            <li class="list-group-item subitem"><a href="#helpPhase4" class="btn subitemLink">Executing up to phase 4</a></li>
+            <li class="list-group-item"><a href="#helpTertiary" class="btn">Tertiary Structure</a></li>
+            <li class="list-group-item"><a href="#helpNetwork" class="btn">Interaction Network</a></li>
+          </ul>
+        </div>
+        <div class=" col-md-8 card">
+            <div class="card-body">
+                <h2 class="card-title text-center" id="helpIntro">Introduction</h2>
+                <p>
+                    This is a guide to help you use Malivhu from the data input step to the results page, 
+                    explaining each option the tool has to offer using the demo data that is available for everyone,
+                    so that you can replicate the results. If you have any questions that are not covered in this page, 
+                    send an email to david.guevara@usu.edu. 
+                </p>
+                <hr>
+                <h2 class="card-title text-center" id="helpDataInput">Data input</h2>
+                <p>
+                    For all predictions the accepted input must be proteins in FASTA format. You can upload a file or copy 
+                    and paste a text for the virus and human sequences. All sequences must be at least 31 amino acids long.
+                    You can find a button which says <b>Load a demo virus/human FASTA</b>, which will fill the input boxes
+                    with several protein sequences for virus and human.
+                </p>
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/submit.png' %}">
+                </div>
+                <hr>
+                <h2 class="card-title text-center" id="helpPhaseSelection">Phase Selection</h2>
+                <p>
+                    Malivhu can work in four phases or, if you know what strain do proteins come from, you can choose
+                    to skip the first 3 phases and run only phase 4. For phases 2 and 3, previous phases must be run too.
+                </p>
+                <p>
+                    <b>Phase 1</b> - This phase predicts whether the input sequence is an ssRNA(-) protein or not.
+                </p>
+                <p>
+                    <b>Phase 2</b> - This phase predicts whether the protein comes from a coronavirus or not.
+                </p>
+                <p>
+                    <b>Phase 3</b> - This predicts whether the protein comes from MERS or SARS or other species.
+                </p>
+                <p>
+                    <b>Phase 4</b> - This phase predicts whether both proteins interact or not. If phase 3 was executed, 
+                    it runs a BLAST for all SARS proteins before the prediction to find if they belong to SARS-CoV 
+                    or SARS-CoV-2.
+                </p>
+                <p>
+                    <b>Predict virus-human interaction only</b> - This option runs phase 4 only. You must choose a virus strain
+                    for it to be executed.
+                </p>
+                <div class="text-center">
+                    <img style="width:50%" src="{% static '/malivhu/images/help/submit2.png' %}">
+                    <img style="width:50%" src="{% static '/malivhu/images/help/submit3.png' %}">
+                </div>
+                <hr>
+                <h2 class="card-title text-center" id="helpSubmit">Submit</h2>
+                <p>
+                    The <b>Submit</b> section has a text box where you can type your email, so we tell you whenever your job
+                    is done running. Below you can find a button for resetting the form and the button for submitting
+                    your job. After submitting your job, if you stay in the same page, it will redirect you to the results page
+                    whenever it is done predicting.
+                </p>
+                <div class="text-center">
+                    <img style="width:50%" src="{% static '/malivhu/images/help/submitBtn.png' %}">
+                </div>
+                <hr>
+                <h2 class="card-title text-center" id="helpResults">Results</h2>
+                <p>
+                    For the following examples we submitted our jobs filling them with the "Load a demo virus/human FASTA" button. 
+                    On the top you will find a tab for each one of the executed phases. The selected one will have 
+                    bold text. Below the tabs you will find a short description of what the phase does. 
+                </p>
+                <p>
+                    Above the results table 
+                    you will find 4 buttons for exporting the data: <b>Copy</b> for copying automatically
+                    the results to the clipboard in a tab-separated format; <b>CSV</b> for downloading a file in CSV format; 
+                    <b>Excel</b> for downloading an Excel file with the results; and <b>Print</b> for printing the table.
+                </p>
+                <p>
+                    You can use the Search text box for filtering a specific protein or specific predictions, and also
+                    you can use the Show list to increase the number of entries you want to look at on the same page.
+                </p>
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/results1.png' %}">
+                </div>
+                <h2 id="helpPhases12">Executing phases 1 and 2 only</h3>
+                <p>
+                    After the description you will find a summary of the results. This will tell you how many sequences
+                    were ssRNA(-) if it is the phase 1 tab, and how many sequences were Coronaviridae if it is the phase 2 tab.
+                    The results table will color the entries according to their results. If it is a positive prediction 
+                    (e.g. if it is an ssRNA(-) or Coronaviridae sequence), it will be green. If not, it will be red. Additionally, 
+                    it will show the highest score in bold text. 
+                </p>
+                <p>
+                    There will also be a button inside each row for you to predict the protein secondary and/or tertiary structure. 
+                    If you click <b>Predict</b>, it will start predicting and will change to a <b>View</b> button when it is done. 
+                </p>
+                <p>
+                    <b>WARNING</b>: the tertiary structure prediction might take around 1 hour. You can always come back to the results 
+                    page and check if the prediction is finished.
+                </p>
+                <p>
+                    When you click the <b>View</b> button, it will open a new tab in your browser that will have the 
+                    secondary structure prediction in PSIPRED format and the tertiary structure in PDB format on NGL.
+                </p>
+                <p>
+                    If you choose to run only up to phase 1 or 2, you will see a button above the export options that
+                    allows you to run the next phase. In our example, we ran phases 1 and 2, so we can run phase 3.
+                    It will automatically get the results for phase 3 and reload the page, showing the results.
+                </p>
+                <div class="text-center">
+                    <img id="workflow" src="{% static '/malivhu/images/help/results2.png' %}">
+                </div>
+                <h2 id="helpPhase3">Executing phase 3</h3>
+                <p>
+                    After the description you will find a summary of the results. This will tell you how many sequences
+                    were from SARS and MERS. The results table will color the entries according to their results. If it 
+                    predicts that the protein belongs to SARS, it will be light green, and if it predicts that the protein 
+                    belongs to MERS, it will be dark green. If not, it will be red. Additionally, 
+                    it will show the highest score in bold text.
+                </p>
+                <p>
+                    There will also be a button inside each row for you to predict the protein secondary and/or tertiary structure. 
+                    If you click <b>Predict</b>, it will start predicting and will change to a <b>View</b> button when it is done. 
+                </p>
+                <p>
+                    <b>WARNING</b>: the tertiary structure prediction might take around 4 hours. You can always come back to the results 
+                    page and check if the prediction is finished.
+                </p>
+                <p>
+                    When you click the <b>View</b> button, it will open a new tab in your browser that will have the 
+                    secondary structure prediction in PSIPRED format and the tertiary structure in PDB format on NGL.
+                </p>
+                <p>
+                    If you choose to run only up to phase 3, you will see a button above the export options that
+                    allows you to run the next phase. When that button is clicked, it will show a new form where
+                    you will be able to input human sequences with a file or a fasta text, or you can also fill
+                    it with the demo data. Here, you will find the field to input your email as well, so we alert you when it is done
+                    predicting. If you click <b>Close</b>, it will close the form. If you click <b>Run</b>, 
+                    it will start the prediction, and if you stay in the same page, it will open a new tab with the 
+                    results whenever the prediction is done.
+                </p>
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/results3.png' %}">
+                    <img style="width:50%" src="{% static '/malivhu/images/help/submitp4.png' %}">
+                </div>
+                <h2 id="helpPhase4">Executing up to phase 4</h3>
+                <p>
+                    If you chose to <b>predict virus-human interaction only</b>, you will only see the tab for phase 4.
+                </p>
+                <p>
+                    After the description you will find a summary of the results. This will tell you how many protein pairs
+                    were predicted to interact. The results table will color the entries according to their results. If it 
+                    predicts that the protein pair interacts, it will be green. If not, it will be red. Additionally, 
+                    it will show the highest score in bold text.
+                </p>
+                <p>
+                    There will also be two button inside each row for you to predict the viral or human protein secondary 
+                    structure. If you click <b>Predict</b>, it will start predicting and will change to a <b>View</b> button when it is done. 
+                </p>
+                <p>
+                    When you click the <b>View</b> button, it will open a new tab in your browser that will have the 
+                    secondary structure prediction in PSIPRED format.
+                </p>
+                <p>
+                    In addition, if you click <b>View network</b>, another tab will open where you will be able to visualize 
+                    the interaction network between the predicted positive results.
+                </p>
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/phase4.png' %}">
+                </div>
+                <hr>
+                <h2 class="card-title text-center" id="helpTertiary">Tertiary Structure</h2>
+                <p>
+                    The <b>Tertiary Structure</b> visualization can be accessed clicking the <b>View</b> button for a viral protein after it has finished predicting. 
+                    For the following example, protein 5SZJ_A from the dummy data will be shown.
+                </p>
+                <p>
+                    You can left click and drag on any blank area of the viewer to rotate the protein, or right click and drag for moving the 
+                    figure to any direction. Also, for zooming in and out, you can use the mouse wheel.
+                    If you hover on any point of the structure, it will display 
+                    the short name of the amino acid at that place with its ordinal number in the sequence. 
+                </p>
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/tertiary1.png' %}">
+                </div>
+                <p>
+                    At the right there is a menu with two options: <b>Representations</b> and <b>Color scheme</b>. Within the <b>Representations</b>
+                    menu there are 10 options to change the representation of the protein, which can be turned on and off, which means there can
+                    be multiple representations activated at the same time. Within the <b>Color scheme</b> menu there are 20 preset color schemes
+                    to show the protein, and there can only be one active at a time.   
+                </p> 
+                <div class="text-center">
+                    <img src="{% static '/malivhu/images/help/tertiary2.png' %}">
+                </div> <br>
+                <p>
+                    Additionally, you can download the PDB file or the image of the current state of the protein with the chosen representations and
+                    color scheme.
+                </p> 
+                <hr>
+                <h2 class="card-title text-center" id="helpNetwork">Interaction Network</h2>
+                <p>
+                    The <b>Interaction Network</b> section shows a graph showing the interactions between the viral and human proteins,
+                    which can be downloaded as a Cytoscape JSON or as a SVG image of what is being currently displayed.
+                </p>
+                <div class="text-center">
+                    <img style="width:100%" src="{% static '/malivhu/images/help/network.png' %}">
+                </div>
+                <p>
+                    Above the graph it displays the colors for each type of node and what it means. They are also buttons that filter the graph 
+                    when they are clicked, so if, for example, <b>SARS-CoV-2</b> is clicked, all SARS-CoV-2 nodes will be hidden, as well as the
+                    human nodes that were left with no interactions, and it will also hide all the interactions
+                    in the table at the right side. If it is clicked again, the removed nodes will show up again.
+                    The only button that is not clickable is the <b>Human protein</b> legend, 
+                    since deactivating the human proteins would hide everything. 
+                </p>
+                <div class="text-center">
+                    <img style="width:70%" src="{% static '/malivhu/images/help/networkButton.png' %}">
+                </div>
+                <p>
+                   All nodes are clickable and can be dragged and dropped wherever you want inside the box.
+                   If a node is clicked, it will show additional information in the upper right side that 
+                   Malivhu found about the protein based on the name it had in the FASTA sequence by searching
+                   on NCBI and Uniprot. It will show the links to the NCBI and Uniprot pages, 
+                   along with the full protein name, the organism it belongs to and its taxon ID. Every piece
+                   of information will show up depending on whether data about it was found or not.
+                </p>
+                <div class="text-center">
+                    <img style="width:100%" src="{% static '/malivhu/images/help/networkInfo.png' %}">
+                </div>
+                <p>
+                    Below the protein information (or at the top of the right panel if no node has been selected) you will find a table with
+                    the list of interactions, listing the virus, the viral protein and the human protein, each row
+                    colored depending on the virus. Above the table there is a search bar that will automatically
+                    filter the data depending on what is typed. Clicking the <b>Filter graph</b> button will not only
+                    filter the table, but also the graph.
+                 </p>
+                 <div class="text-center">
+                     <img style="width:100%" src="{% static '/malivhu/images/help/filter.png' %}">
+                 </div>
+                 <p>
+                    In the bottom side of the right panel there are visualization options. You can choose
+                    a layout, which changes the shape of the displayed graph, the font size of the nodes,
+                    the node size and the background color of the box. All these changes will be shown when
+                    downloading the SVG image.
+                 </p>
+                 <div class="text-center">
+                     <img style="width:30%" src="{% static '/malivhu/images/help/networkLayouts.png' %}">
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

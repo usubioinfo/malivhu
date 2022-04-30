@@ -1,0 +1,57 @@
+{% load static %}
+<html>
+    <head>        
+        <title>Malivhu - Machine Learning for Virus Classification and Virus-Human Interaction Prediction</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'malivhu/images/favicon.ico' %}"/>
+        <link rel="stylesheet" href="{% static 'malivhu/style.css' %}" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <link rel="stylesheet" href="{% static 'malivhu/style.css' %}" type="text/css" />
+        <script src="{% static 'malivhu/base.js' %}"></script> 
+        {% block header %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block nav %}
+        <nav class="navbar navbar-expand-sm navbar-light bg-light justify-content-center">
+            <a class="navbar-brand" href="/malivhu"><img src="{% static '/malivhu/images/malivhu-logo.png' %}" class="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">{% block nav-home %}<a class="nav-link" href="{% url 'home' %}">Home</a>{% endblock %}</li>
+                    <li class="nav-item">{% block nav-submit %}<a class="nav-link" href="{% url 'submit' %}">Submit</a>{% endblock %}</li>
+                    <li class="nav-item">{% block nav-help %}<a class="nav-link" href="{% url 'help' %}">Help</a>{% endblock %}</li>
+                    <li class="nav-item">{% block nav-datasets %}<a class="nav-link" href="{% url 'datasets' %}">Datasets</a>{% endblock %}</li>
+                </ul>
+            </div>
+            <a class="navbar-brand" href="/malivhu"><img src="{% static '/malivhu/images/usulogo.svg' %}" class="logo filter-white"></a>
+            <a class="navbar-brand" href="/malivhu"><img src="{% static '/malivhu/images/kaabil2.png' %}" class="logo filter-white-png" style="height: 80%"></a>
+        </nav>
+        <div>
+            {% endblock %}
+            {% block body %}
+            {% endblock %}
+        </div>
+        <div class="pt-4 footerWhitespace">
+            &nbsp; 
+        </div>
+        <footer class=" page-footer pt-1">
+            © 2021 &nbsp;|&nbsp; 
+            <a href="https://www.usu.edu" target="_blank">Utah State University</a> &nbsp;|&nbsp;  
+            <a href="http://bioinfo.usu.edu" target="_blank">KAABiL</a> &nbsp;|&nbsp; 
+            <a href="http://www.biosystems.usu.edu" target="_blank">Center for Integrated BioSystems </a>
+        </footer>
+        <!-- Cookie Consent by https://www.PrivacyPolicies.com -->
+        <script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+        <script type="text/javascript" charset="UTF-8">
+        document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({"notice_banner_type":"simple","consent_type":"implied","palette":"dark","language":"en","page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"website_name":"Malivhu","website_privacy_policy_url":"http://bioinfo.usu.edu/malivhu/privacy-policy"});
+        });
+        </script>
+        <noscript>Cookie Consent by <a href="https://www.privacypolicies.com/privacy-policy-generator/" rel="nofollow noopener">Privacy Policies Generator website</a></noscript>
+        <!-- End Cookie Consent -->
+    </body>
+</html>

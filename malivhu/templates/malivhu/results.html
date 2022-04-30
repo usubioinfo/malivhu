@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+<script src="{% static 'malivhu/results.js' %}"></script> 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+{% endblock %}
+
+{% block nav-submit %}
+<a class="nav-link active nav-link-active" href="{% url 'submit' %}">Submit</a>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ phase1|json_script:"phase1-data" }}
+    {{ phase2|json_script:"phase2-data" }}
+    {{ phase3|json_script:"phase3-data" }}
+    {{ phase4|json_script:"phase4-data" }}
+    {{ info1|json_script:"info1-data" }}
+    {{ info2|json_script:"info2-data" }}
+    {{ info3|json_script:"info3-data" }}
+    {{ info4|json_script:"info4-data" }}
+    {{ structures|json_script:"structures-data" }}
+    {{ structures3|json_script:"structures3-data" }}
+    <h2 class="display-4 text-center">Results</h2>
+    <ul class="nav nav-tabs" id="results" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="phase1-tab" data-bs-toggle="tab" data-bs-target="#phase1" type="button" role="tab" aria-controls="phase1" aria-selected="true" style="display: none;">Phase 1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="phase2-tab" data-bs-toggle="tab" data-bs-target="#phase2" type="button" role="tab" aria-controls="phase2" aria-selected="false" style="display: none;">Phase 2</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="phase3-tab" data-bs-toggle="tab" data-bs-target="#phase3" type="button" role="tab" aria-controls="phase3" aria-selected="false" style="display: none;">Phase 3</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="phase4-tab" data-bs-toggle="tab" data-bs-target="#phase4" type="button" role="tab" aria-controls="phase4" aria-selected="false" style="display: none;" onclick="openPhase4()">Phase 4</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <br>
+        <div class="tab-pane fade show active" id="phase1" role="tabpanel" aria-labelledby="phase1-tab">
+            <h5 id="p1tooltip" style="display: none">This phase predicts whether each of the virus proteins provided belong to an ssRNA(-) virus or not.</h5>
+            <br>
+            <h6 id="summaryP1" style="display: none"></h6>
+            <h3>{% if info1 != "ACTIVE" %}{{info1}}{% endif %}</h3>
+            <form id="formRunP2" style="display: none;" action="{% url 'results' jobId %}" method="post">
+                {% csrf_token %}
+                <button type="submit" name="runP2" id="btnRunPhase2" class="btn btn-primary">Click here to run phase 2</button>
+                <img class="sub-image" data-bs-toggle="modal" data-bs-target="#modalPhase2" src="{% static '/malivhu/images/info.svg' %}" aria-hidden="true" width=25px>
+                <br><br>
+            </form>
+            <table id="tabPhase1" class="table" width="100%" style="display: none;"></table>
+        </div>
+        <div class="tab-pane fade" id="phase2" role="tabpanel" aria-labelledby="phase2-tab">
+            <h5>This phase predicts whether each of the ssRNA(-) virus proteins that were predicted in phase 1 are Coronaviridae or not.</h5>
+            <br>
+            <h6 id="summaryP2" style="display: none"></h6>
+            <h3>{% if info2 != "ACTIVE" %}{{info2}}{% endif %}</h3>
+            <form id="formRunP3" style="display: none;" action="{% url 'results' jobId %}" method="post">
+                {% csrf_token %}
+                <button type="submit" name="runP3" id="btnRunPhase3" class="btn btn-primary">Click here to run phase 3</button>
+                <img class="sub-image" data-bs-toggle="modal" data-bs-target="#modalPhase3" src="{% static '/malivhu/images/info.svg' %}" aria-hidden="true" width=25px>
+                <br><br>
+            </form>
+            <table id="tabPhase2" class="table" width="100%"></table>
+        </div>
+        <div class="tab-pane fade" id="phase3" role="tabpanel" aria-labelledby="phase3-tab">
+            <h5>This phase predicts whether each of the Coronaviridae virus proteins that were predicted in phase 2 are SARS, MERS or other species.</h5>
+            <br>
+            <h6 id="summaryP3" style="display: none"></h6>
+            <h3>{% if info3 != "ACTIVE" %}{{info3}}{% endif %}</h3>
+            <button type="submit" style="display: none" name="runP4" id="btnRunPhase4" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalHuman">Click here to run phase 4</button>
+            <img id="imgRunPhase4" style="display: none" class="sub-image" data-bs-toggle="modal" data-bs-target="#modalPhase4" src="{% static '/malivhu/images/info.svg' %}" aria-hidden="true" width=25px>
+            <br><br>
+            <table id="tabPhase3" class="table" width="100%"></table>
+        </div>
+        <div class="tab-pane fade" id="phase4" role="tabpanel" aria-labelledby="phase4-tab">
+            <h5 id="p4tooltip" style="display: none">This phase predicts whether each of the SARS and MERS virus proteins that were predicted in phase 3 interact with every provided human protein. Since phase 3 only predicts if a protein belongs to a SARS virus, we use BlastP on those proteins to classify them into SARS-CoV1 or SARS-CoV2.</h5>
+            <br>
+            <h6 id="summaryP4" style="display: none"></h6>
+            <h3>{% if info4 != "ACTIVE" %}{{info4}}{% endif %}</h3>
+            <table id="tabPhase4" class="table" width="100%"></table>
+        </div>
+    </div>
+    <div class="modal fade" id="modalPhase2" tabindex="-1" role="dialog" aria-labelledby="modalPhase2Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPhase2Label">Phase 2 - Coronaviridae vs non-Coronaviridae</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>This phase predicts whether each of the ssRNA(-) virus proteins that were predicted in phase 1 are Coronaviridae or not.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalPhase3" tabindex="-1" role="dialog" aria-labelledby="modalPhase3Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPhase3Label">Phase 3 - SARS vs MERS vs other Coronaviridae</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>This phase predicts whether each of the Coronaviridae virus proteins that were predicted in phase 2 are SARS, MERS or other species.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalPhase4" tabindex="-1" role="dialog" aria-labelledby="modalPhase4Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPhase4Label">Phase 4 - Interaction with human proteins</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>This phase predicts whether each of the SARS and MERS virus proteins that were predicted in phase 3 interact with every provided human protein. Since phase 3 only predicts if a protein belongs to a SARS virus, we use BlastP on those proteins to classify them into SARS-CoV1 or SARS-CoV2.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalHuman" tabindex="-1" role="dialog" aria-labelledby="modalHuman" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHumanLabel">Human protein sequences</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+                    </button>
+                </div>
+                <form id="formPhase4" action="/malivhu/{{jobId}}/submitPhase4" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p>Upload a FASTA file: </p>
+                        <input type="file" class="form-control-file" id="fileHumanFasta" name="fileHumanFasta" value="{{human}}">
+                        <p>Or paste your FASTA sequence &#9;&#9; <span onClick="fillHuman()" class="btn btn-secondary btn-sm pull-right">Load a demo human FASTA</span></p>
+                        <textarea class="form-control" id="txtHumanFasta" rows="5" name="txtHumanFasta">{{human}}</textarea>
+                        Enter your email address (optional)
+                        <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" name="txtEmail">
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="checkHumanFasta()" class="btn btn-primary" data-bs-dismiss="modal">Run</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalSubmission" tabindex="-2" role="dialog" aria-labelledby="modalSubmissionLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSubmissionLabel">Information about your submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">  
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="submitted" style="display:none">
+                    Your interactions are being predicted. You can check your results at <a href="{{ request.build_absolute_uri }}{{jobid}}" target="_blank">{{ request.build_absolute_uri }}{{jobid}}</a>.
+                    <div id="loadingGif">
+                        <img src="{% static '/malivhu/images/loadingDNA.gif' %}"></img>
+                    </div>
+                </div>
+                <div id="submitError" style="display:none">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+Django==3.2.8
+numpy==1.21.2
+Bio==1.2.2
+codes==0.1.5
+fabric==2.6.0
